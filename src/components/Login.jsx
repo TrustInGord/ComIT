@@ -23,7 +23,8 @@ const Login = ({ onLogin, switchToRegister }) => {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        onLogin(data.user);
+        localStorage.setItem('userId', data.user.id);
+        onLogin(data.user, data.gameState);
       } else {
         setError(data.message);
       }

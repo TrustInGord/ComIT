@@ -9,8 +9,7 @@ import './App.css'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('card')
-  const [score, setScore] = useState(0)
-  const [day, setDay] = useState(1)
+  const [gameState, setGameState] = useState({ money: 0, currentDay: 1, wrestlers: [], matches: [] })
   const [user, setUser] = useState(null)
   const [authMode, setAuthMode] = useState('login')
 
@@ -25,13 +24,15 @@ function App() {
     setCurrentPage(hash)
   }, [])
 
-  const handleLogin = (userData) => {
+  const handleLogin = (userData, userGameState) => {
     setUser(userData)
+    setGameState(userGameState || { money: 1000, currentDay: 1, wrestlers: [], matches: [] })
   }
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     setUser(null)
+    setGameState({ money: 0, currentDay: 1, wrestlers: [], matches: [] })
   }
 
   if (!user) {
@@ -49,13 +50,13 @@ function App() {
   return (
     <div>
       <h1>WrestleBest</h1>
-      <p>Welcome, {user.username}! | Day: {day} | Score: {score}</p>
+      <p>Welcome, {user.username}! | Day: {gameState.currentDay} | Money: ${gameState.money}</p>
       <nav style={{ marginBottom: '20px' }}>
         <button onClick={() => { setCurrentPage('card'); window.location.hash = 'card'; }}>Card</button>
         <button onClick={() => { setCurrentPage('bio'); window.location.hash = 'bio'; }} style={{ marginLeft: '10px' }}>Wrestler Bios</button>
         <button onClick={handleLogout} style={{ marginLeft: '10px', backgroundColor: '#dc3545', color: 'white' }}>Logout</button>
       </nav>
-      {currentPage === 'card' && <Card score={score} setScore={setScore} day={day} setDay={setDay} />}
+      {currentPage === 'card' && <Card gameState={gameState} setGameState={setGameState} user={user} />}
       {currentPage === 'bio' && <Bio />}
     </div>
   )

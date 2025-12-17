@@ -1,5 +1,5 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 
@@ -40,7 +40,13 @@ app.post('/auth/register', async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      createdAt: new Date()
+      createdAt: new Date(),
+      gameState: {
+        currentDay: 1,
+        money: 1000,
+        wrestlers: [],
+        matches: []
+      }
     });
     
     res.status(201).json({ message: 'User registered successfully', userId: result.insertedId });
@@ -67,8 +73,40 @@ app.post('/auth/login', async (req, res) => {
     
     res.json({
       token: 'fake-token-' + user._id,
-      user: { username: user.username, id: user._id }
+      user: { username: user.username, id: user._id },
+      gameState: user.gameState
     });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+app.get('/game/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await db.collection(COLLECTION_NAME).findOne({ _id: new ObjectId(userId) });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    res.json({ gameState: user.gameState });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+app.put('/game/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { gameState } = req.body;
+    
+    await db.collection(COLLECTION_NAME).updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { gameState } }
+    );
+    
+    res.json({ message: 'Game state updated' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

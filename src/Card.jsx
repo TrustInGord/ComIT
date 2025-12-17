@@ -3,7 +3,22 @@ import { roster } from './Wrestler.jsx';
 import { faceOff, getTotalStats } from './Match.jsx';
 import './Card.css';
 
-function Card({ score, setScore, day, setDay }) {
+const saveGameState = async (gameState) => {
+  const userId = localStorage.getItem('userId');
+  if (!userId) return;
+  
+  try {
+    await fetch(`http://localhost:4000/game/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gameState })
+    });
+  } catch (error) {
+    console.error('Failed to save game state:', error);
+  }
+};
+
+function Card({ gameState, setGameState, user }) {
   const [selections, setSelections] = useState({});
   const [showResults, setShowResults] = useState(false);
   
@@ -103,7 +118,9 @@ function Card({ score, setScore, day, setDay }) {
                   correctPicks++;
                 }
               });
-              setScore(score + correctPicks);
+              const newGameState = { ...gameState, money: gameState.money + (correctPicks * 100) };
+              setGameState(newGameState);
+              saveGameState(newGameState);
             }}
             className="confirm-button"
           >
@@ -118,7 +135,9 @@ function Card({ score, setScore, day, setDay }) {
             ).length} out of {card.matches.length} correct!</p>
             <button 
               onClick={() => {
-                setDay(day + 1);
+                const newGameState = { ...gameState, currentDay: gameState.currentDay + 1 };
+                setGameState(newGameState);
+                saveGameState(newGameState);
                 setSelections({});
                 setShowResults(false);
               }}
