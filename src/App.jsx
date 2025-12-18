@@ -51,9 +51,24 @@ function App() {
       <h1>WrestleBest</h1>
       <p>Welcome, {user.username}! | Day: {gameState.currentDay} | Money: ${gameState.money}</p>
       <nav style={{ marginBottom: '20px' }}>
-        <button onClick={() => { setCurrentPage('card'); window.location.hash = 'card'; }}>Card</button>
-        <button onClick={() => { setCurrentPage('bio'); window.location.hash = 'bio'; }} style={{ marginLeft: '10px' }}>Wrestler Bios</button>
-        <button onClick={() => { setCurrentPage('store'); window.location.hash = 'store'; }} style={{ marginLeft: '10px' }}>Store</button>
+        <button 
+          onClick={() => { setCurrentPage('card'); window.location.hash = 'card'; }}
+          style={{ backgroundColor: currentPage === 'card' ? '#007bff' : '', color: currentPage === 'card' ? 'white' : '' }}
+        >
+          Card
+        </button>
+        <button 
+          onClick={() => { setCurrentPage('bio'); window.location.hash = 'bio'; }} 
+          style={{ marginLeft: '10px', backgroundColor: currentPage === 'bio' ? '#007bff' : '', color: currentPage === 'bio' ? 'white' : '' }}
+        >
+          Wrestler Bios
+        </button>
+        <button 
+          onClick={() => { setCurrentPage('store'); window.location.hash = 'store'; }} 
+          style={{ marginLeft: '10px', backgroundColor: currentPage === 'store' ? '#007bff' : '', color: currentPage === 'store' ? 'white' : '' }}
+        >
+          Store
+        </button>
         <button onClick={handleLogout} style={{ marginLeft: '10px', backgroundColor: '#dc3545', color: 'white' }}>Logout</button>
       </nav>
       {currentPage === 'card' && <Card gameState={gameState} setGameState={setGameState} user={user} />}

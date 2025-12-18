@@ -80,7 +80,11 @@ function Card({ gameState, setGameState }) {
           return (
             <div key={index} className="match-card">
               <h3>{title}</h3>
-              <p>{match.wrestler1.name} ({match.odds1}%) vs {match.wrestler2.name} ({match.odds2}%)</p>
+              <div style={{ textAlign: 'center' }}>
+                <p>{match.wrestler1.name} ({getTotalStats(match.wrestler1)} pts, {match.odds1}%)</p>
+                <p><strong>VS</strong></p>
+                <p>{match.wrestler2.name} ({getTotalStats(match.wrestler2)} pts, {match.odds2}%)</p>
+              </div>
               {showResults && <p><strong>Winner: {match.result.victor.name}</strong></p>}
             </div>
           );

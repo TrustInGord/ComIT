@@ -46,8 +46,8 @@
   right: -6px;
 }
 
-.picks-section .corner-bottom-left,
-.picks-section .corner-bottom-right {
+.picks-section .ringpost-bottom-left,
+.picks-section .ringpost-bottom-right {
   position: absolute;
   width: 12px;
   height: 12px;
@@ -56,12 +56,12 @@
   border: 2px solid #333;
 }
 
-.picks-section .corner-bottom-left {
+.picks-section .ringpost-bottom-left {
   bottom: -6px;
   left: -6px;
 }
 
-.picks-section .corner-bottom-right {
+.picks-section .ringpost-bottom-right {
   bottom: -6px;
   right: -6px;
 }
