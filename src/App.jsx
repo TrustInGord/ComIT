@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import { roster } from './Wrestler.jsx'
-import { faceOff } from './Match.jsx'
 import Card from './Card.jsx'
 import Bio from './Bio.jsx'
+import Store from './Store.jsx'
 import Login from './components/Login.jsx'
 import Register from './components/Register.jsx'
 import './App.css'
@@ -54,10 +53,12 @@ function App() {
       <nav style={{ marginBottom: '20px' }}>
         <button onClick={() => { setCurrentPage('card'); window.location.hash = 'card'; }}>Card</button>
         <button onClick={() => { setCurrentPage('bio'); window.location.hash = 'bio'; }} style={{ marginLeft: '10px' }}>Wrestler Bios</button>
+        <button onClick={() => { setCurrentPage('store'); window.location.hash = 'store'; }} style={{ marginLeft: '10px' }}>Store</button>
         <button onClick={handleLogout} style={{ marginLeft: '10px', backgroundColor: '#dc3545', color: 'white' }}>Logout</button>
       </nav>
       {currentPage === 'card' && <Card gameState={gameState} setGameState={setGameState} user={user} />}
       {currentPage === 'bio' && <Bio />}
+      {currentPage === 'store' && <Store gameState={gameState} setGameState={setGameState} user={user} />}
     </div>
   )
 }

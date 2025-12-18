@@ -3,6 +3,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 import { authRouter } from "./routes/authRoutes.js";
+import { gameRouter } from "./routes/gameRoutes.js";
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.get('/', (req, res) => {
 });
 
 app.use("/auth", authRouter);
+app.use("/game", gameRouter);
 
 export { app };

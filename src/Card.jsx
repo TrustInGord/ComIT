@@ -18,11 +18,13 @@ const saveGameState = async (gameState) => {
   }
 };
 
-function Card({ gameState, setGameState, user }) {
+function Card({ gameState, setGameState }) {
   const [selections, setSelections] = useState({});
   const [showResults, setShowResults] = useState(false);
+  const [card, setCard] = useState(null);
   
-  const [card] = useState(() => {
+  // Generate new card when component mounts or day changes
+  if (!card || card.day !== gameState.currentDay) {
     const availableWrestlers = [...roster];
     const matches = [];
     
@@ -51,11 +53,18 @@ function Card({ gameState, setGameState, user }) {
       });
     }
     
-    return {
+    const newCard = {
       matches,
-      unmatched: availableWrestlers.slice(-2)
+      unmatched: availableWrestlers.slice(-2),
+      day: gameState.currentDay
     };
-  });
+    
+    if (!card || card.day !== gameState.currentDay) {
+      setCard(newCard);
+    }
+  }
+
+  if (!card) return <div>Loading...</div>;
 
   return (
     <div>
@@ -78,6 +87,8 @@ function Card({ gameState, setGameState, user }) {
         })}
       </div>
       <div className="picks-section">
+        <div className="corner-bottom-left"></div>
+        <div className="corner-bottom-right"></div>
         <h3>Make Your Picks</h3>
         {card.matches.map((match, index) => {
           const isFirst = index === 0;
@@ -114,11 +125,24 @@ function Card({ gameState, setGameState, user }) {
               setShowResults(true);
               let correctPicks = 0;
               Object.entries(selections).forEach(([matchIndex, selectedWrestler]) => {
-                if (selectedWrestler === card.matches[matchIndex].result.victor) {
+                const match = card.matches[matchIndex];
+                const isCorrect = selectedWrestler === match.result.victor;
+                console.log(`Match ${matchIndex}: Selected ${selectedWrestler.name}, Winner ${match.result.victor.name}, Correct: ${isCorrect}`);
+                if (isCorrect) {
                   correctPicks++;
                 }
               });
-              const newGameState = { ...gameState, money: gameState.money + (correctPicks * 100) };
+              
+              // Calculate multiplier based on purchased items
+              const purchasedItems = gameState.purchasedItems || [];
+              let multiplier = 1;
+              if (purchasedItems.includes(3)) multiplier = 5; // Title
+              else if (purchasedItems.includes(2)) multiplier = 2.5; // Shirt
+              else if (purchasedItems.includes(1)) multiplier = 1.5; // Hat
+              
+              const baseScore = correctPicks * 100;
+              const finalScore = Math.floor(baseScore * multiplier);
+              const newGameState = { ...gameState, money: gameState.money + finalScore };
               setGameState(newGameState);
               saveGameState(newGameState);
             }}
@@ -140,6 +164,7 @@ function Card({ gameState, setGameState, user }) {
                 saveGameState(newGameState);
                 setSelections({});
                 setShowResults(false);
+                setCard(null); // Force regeneration of card
               }}
               className="confirm-button"
             >

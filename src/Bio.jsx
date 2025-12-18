@@ -14,17 +14,16 @@ function Bio() {
   };
 
   return (
-    <div style={{ padding: '20px', border: '1px solid #ccc', margin: '20px 0' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <button onClick={prevWrestler}>← Previous</button>
+    <div style={{ padding: '20px', border: '1px solid #ccc', marginBottom: '20px', maxWidth: '800px', margin: '0 auto 20px auto' }}>
+      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
         <h2>{wrestler.name}</h2>
-        <button onClick={nextWrestler}>Next →</button>
       </div>
       
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         <div>
           <p><strong>Hometown:</strong> {wrestler.hometown}</p>
           <p><strong>Gender:</strong> {wrestler.gender}</p>
+          <p><strong>Trait:</strong> {wrestler.trait}</p>
         </div>
         
         <div>
@@ -39,9 +38,13 @@ function Bio() {
         </div>
       </div>
       
-      <p style={{ textAlign: 'center', marginTop: '10px', color: '#666' }}>
-        {currentIndex + 1} of {roster.length}
-      </p>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px', gap: '20px' }}>
+        <button onClick={prevWrestler}>← Previous</button>
+        <p style={{ color: '#666', margin: 0 }}>
+          {currentIndex + 1} of {roster.length}
+        </p>
+        <button onClick={nextWrestler}>Next →</button>
+      </div>
     </div>
   );
 }
