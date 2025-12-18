@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 const saveGameState = async (gameState) => {
   const userId = localStorage.getItem('userId');
   if (!userId) return;
@@ -21,7 +19,7 @@ const items = [
   { id: 3, name: 'WrestleBest Title', price: 1000000, multiplier: 5 }
 ]
 
-function Store({ gameState, setGameState, user }) {
+function Store({ gameState, setGameState }) {
   const purchasedItems = gameState.purchasedItems || []
 
   const handlePurchase = (item) => {
@@ -43,7 +41,7 @@ function Store({ gameState, setGameState, user }) {
         border: '2px solid #ccc', 
         borderRadius: '12px', 
         padding: '20px', 
-        backgroundColor: '#f9f9f9' 
+        backgroundColor: 'rgb(36, 36, 36)' 
       }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
         {items.map(item => (
@@ -52,7 +50,9 @@ function Store({ gameState, setGameState, user }) {
             borderRadius: '8px', 
             padding: '20px', 
             width: '200px',
-            textAlign: 'center'
+            textAlign: 'center',
+            backgroundColor: 'black',
+            color: 'white'
           }}>
             <h3>{item.name}</h3>
             <p>${item.price.toLocaleString()}</p>

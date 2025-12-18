@@ -87,8 +87,8 @@ function Card({ gameState, setGameState }) {
         })}
       </div>
       <div className="picks-section">
-        <div className="corner-bottom-left"></div>
-        <div className="corner-bottom-right"></div>
+        <div className="ringpost-bottom-left"></div>
+        <div className="ringpost-bottom-right"></div>
         <h3>Make Your Picks</h3>
         {card.matches.map((match, index) => {
           const isFirst = index === 0;

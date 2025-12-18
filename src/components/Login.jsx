@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './WrestlingRing.css';
 
 const Login = ({ onLogin, switchToRegister }) => {
   const [formData, setFormData] = useState({
@@ -34,7 +35,9 @@ const Login = ({ onLogin, switchToRegister }) => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px' }}>
+    <div className="wrestling-ring" style={{ maxWidth: '400px', margin: '50px auto', padding: '20px' }}>
+      <div className="ringpost-bottom-left"></div>
+      <div className="ringpost-bottom-right"></div>
       <h2>Login to WrestleBest</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
